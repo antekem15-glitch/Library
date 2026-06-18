@@ -1,122 +1,102 @@
-
-
-
-
-const dialog= document.getElementById("addBooks") 
-
-
-function showAddDialog(){
-    dialog.showModal()
-}
-const title = document.getElementById('title');
-const author = document.getElementById('author');
-const pages = document.getElementById('pages');
+const dialog = document.getElementById("addBooks");
 const container = document.querySelector('.main');
 const wrapper = document.querySelector('.wrapper');
 
 
+function showAddDialog() {
+    dialog.showModal();
+}
+
+function closeAddDialog() {
+    dialog.close();
+}
+
+
+dialog.addEventListener("click", (e) => {
+    if (!wrapper.contains(e.target)) {
+        dialog.close();
+    }
+});
+
+
+class Book {
+    constructor(title, author, pages) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+    }
+
+    createBook() {
+        // DOM-Elemente erstellen
+        this.card = document.createElement("div");
+        this.bookTitle = document.createElement("h2");
+        this.bookAuthor = document.createElement("p");
+        this.bookPages = document.createElement("p");
+        this.statusReading = document.createElement("p");
+        this.btnContainer = document.createElement("div");
+        this.rmvBtn = document.createElement("button");
+        this.checkbox = document.createElement("input");
+        this.checkboxContainer = document.createElement("div");
+        this.label = document.createElement("label");
+
+        // Klassen und Attribute setzen
+        this.card.className = "bookCard";
+        this.rmvBtn.className = "rmvButton";
+        this.btnContainer.className = "cardButtons";
+        this.checkboxContainer.className = "check";
+        this.checkbox.type = "checkbox";
+        
+
+        // Texte setzen
+        this.bookTitle.textContent = `Title: ${this.title}`;
+        this.bookAuthor.textContent = `Author: ${this.author}`;
+        this.bookPages.textContent = `Pages: ${this.pages}`;
+        this.statusReading.textContent = "Read";
+        this.rmvBtn.textContent = "Remove";
+        this.label.textContent = "Not Read";
+
+        this.checkboxContainer.append(this.checkbox, this.label)
+        this.btnContainer.append(this.checkboxContainer, this.rmvBtn);
+        this.card.append(
+            this.bookTitle,
+            this.bookAuthor,
+            this.bookPages,
+            this.btnContainer,
+            
+        );
+
+        
+        this.rmvBtn.addEventListener('click', () => {
+            this.card.remove();
+        });
+
+        this.checkbox.addEventListener('change', () => {
+            this.label.textContent = this.checkbox.checked ? "Read" : "Not Read";
+        });
+
+        return this.card;
+    }
+}
+
+
 document.getElementById("dialogButton").addEventListener('click', function() {
-    event.preventDefault()
-    
-    const card=document.createElement("div");
-    const bookTitle=document.createElement("h2");
-    const bookAuthor=document.createElement("p");
-    const bookPages=document.createElement("p");
-    const statusReading=document.createElement("p");
-    const btnContainer=document.createElement("div");
-    
-    const rmvBtn=document.createElement("button");
-    const checkbox = document.createElement("input");
-    const checkboxContainer = document.createElement("div");
-    
+    event.preventDefault();
 
-    const label = document.createElement("label");
-    label.className = "status-label";
-    label.textContent = "Not Read";
-    checkbox.type = "checkbox";
-    checkbox.className = "statusCheckbox";
-
-
-    
-    
-    const titleInput = document.getElementById("title");
     const titleValue = document.getElementById("title").value.trim();
     const authorValue = document.getElementById("author").value.trim();
-    const authorInput = document.getElementById("author");
     const pagesValue = document.getElementById("pages").value.trim();
-    const pagesInput = document.getElementById("pages");
-    const readDiv = document.getElementById("check");
-    
-    
-    
-    
-    
-    if (titleValue === "" || authorValue === "" || pagesValue === "") {
-        alert ("Please enter all the data");
-        return;
-    } 
-    
-    event.preventDefault()
-    
-    card.className ="bookCard";
-    rmvBtn.className = "rmvButton";
-    btnContainer.className = "cardButtons";
-    statusReading.textContent = "Read";
-    checkboxContainer.className = "check";
-    
-    
-    bookTitle.textContent = `Title: ${titleValue}`;
-    bookAuthor.textContent = `Author: ${authorValue}`;
-    bookPages.textContent = `Pages: ${pagesValue}`;
 
-    rmvBtn.textContent = "Remove";
-    
-    card.append(bookTitle, bookAuthor, bookPages, checkbox, label, btnContainer);
-    label.className = "status-label";
-    label.textContent = "Not Read";
-    btnContainer.append(checkboxContainer, rmvBtn  );
-    container.appendChild(card);
-    checkboxContainer.append(checkbox,label)
-    
+    if (titleValue === "" || authorValue === "" || pagesValue === "") {
+        alert("Please enter all the data");
+        return;
+    }
+    const book=new Book(titleValue, authorValue, pagesValue);
+    const cardElement = book.createBook()
+    container.appendChild(cardElement);
 
    
-    titleInput.value = ""
-    authorInput.value = ""
-    pagesInput.value = ""
+    document.getElementById("title").value = "";
+    document.getElementById("author").value = "";
+    document.getElementById("pages").value = "";
     dialog.close();
-
-
-    rmvBtn.addEventListener('click', function(){
-        card.remove();
-    })
-checkbox.addEventListener('change', function() {
-    label.textContent = checkbox.checked ? "Read" : "Not Read";
 });
-})
-
-
-function closeAddDialog(){
-    dialog.close()
-}
-dialog.addEventListener("click", (e) => {
-    if (!wrapper.contains(e.target)){
-        dialog.close()
-    }
-})
-
-const checkbox = document.getElementById('status');
-const label = document.getElementById('statusText');
-
-checkbox.addEventListener('change', function() {
-    if (checkbox.checked) {
-        label.textContent = "Read";
-    } else {
-        label.textContent = "Not Read";
-    }
-});
-
-
-
-
-
-
