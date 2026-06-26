@@ -27,7 +27,7 @@ class Book {
     }
 
     createBook() {
-        // DOM-Elemente erstellen
+        
         this.card = document.createElement("div");
         this.bookTitle = document.createElement("h2");
         this.bookAuthor = document.createElement("p");
@@ -39,7 +39,7 @@ class Book {
         this.checkboxContainer = document.createElement("div");
         this.label = document.createElement("label");
 
-        // Klassen und Attribute setzen
+        
         this.card.className = "bookCard";
         this.rmvBtn.className = "rmvButton";
         this.btnContainer.className = "cardButtons";
@@ -47,7 +47,7 @@ class Book {
         this.checkbox.type = "checkbox";
         
 
-        // Texte setzen
+        
         this.bookTitle.textContent = `Title: ${this.title}`;
         this.bookAuthor.textContent = `Author: ${this.author}`;
         this.bookPages.textContent = `Pages: ${this.pages}`;
@@ -82,6 +82,10 @@ class Book {
 document.getElementById("dialogButton").addEventListener('click', function() {
     event.preventDefault();
 
+    document.getElementById("errorTitle").textContent = "";
+    document.getElementById("errorAuthor").textContent = "";
+    document.getElementById("errorPages").textContent = "";
+
     const titleValue = document.getElementById("title").value.trim();
     const authorValue = document.getElementById("author").value.trim();
     const pagesValue = document.getElementById("pages").value.trim();
@@ -89,7 +93,43 @@ document.getElementById("dialogButton").addEventListener('click', function() {
     if (titleValue === "" || authorValue === "" || pagesValue === "") {
         alert("Please enter all the data");
         return;
+    } 
+    
+    const nurBuchstaben = /^[a-zA-Z]+$/;
+    
+    if (!nurBuchstaben.test(titleValue)) {
+        const errorTitle= document.getElementById("errorTitle");
+        errorTitle.className = "error";
+        errorTitle.textContent = "Letters only";
+        
+    
     }
+
+    if (!nurBuchstaben.test(authorValue)) {
+        const errorAuthor= document.getElementById("errorAuthor");
+        errorAuthor.className = "error";
+        errorAuthor.textContent = "Letters only";
+        
+    }
+
+
+    const nurZahlen = /^[0-9]+$/;
+    if (!nurZahlen.test(pagesValue)) {
+        const errorPages = document.getElementById("errorPages");
+        errorPages.className = "error";
+        errorPages.textContent = "Numbers only";
+    };
+    
+
+   if (document.getElementById("errorTitle").textContent !== "" ||
+        document.getElementById("errorAuthor").textContent !== "" ||
+        document.getElementById("errorPages").textContent !== "") {
+        return;  
+        
+    
+    };
+
+
     const book=new Book(titleValue, authorValue, pagesValue);
     const cardElement = book.createBook()
     container.appendChild(cardElement);
@@ -100,3 +140,5 @@ document.getElementById("dialogButton").addEventListener('click', function() {
     document.getElementById("pages").value = "";
     dialog.close();
 });
+
+

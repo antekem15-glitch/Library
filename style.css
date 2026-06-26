@@ -116,11 +116,19 @@ dialog{
     padding: 30px;
 }
 
+.error{
+width: 100%;
+padding: 0;
+
+
+}
+
 #title,
 #author,
 #pages {
     display: flex;
     justify-self: center;
+   
 }
 #dialogButton {
     display: flex;
@@ -162,4 +170,20 @@ background: #470e06; }
 .check{
     display: flex;
     gap: 5px;
+}
+
+.dialogTitle{
+
+    margin-top: 20px;
+}
+
+
+.dialogAuthor{
+  margin-bottom: 10px;
+}
+
+
+.error{
+  font-weight: bold;
+  color: #cf210a;
 }
